@@ -1,5 +1,5 @@
 'use strict';
-
+// 실제 화상채팅을 하는 클라이언트 코드
 var isChannelReady = false;
 var isInitiator = false;
 var isStarted = false;
@@ -94,7 +94,7 @@ var localVideo = document.querySelector('#localVideo');
 var remoteVideo = document.querySelector('#remoteVideo');
 
 navigator.mediaDevices.getUserMedia({
-  audio: false,
+  audio: true,
   video: true
 })
 .then(gotStream)
@@ -232,6 +232,9 @@ function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
   remoteStream = event.stream;
   remoteVideo.srcObject = remoteStream;
+
+  remoteVideo.classList.add("remoteVideoInChatting");
+  localVideo.classList.add("localVideoInChatting");
 }
 
 function handleRemoteStreamRemoved(event) {
@@ -245,6 +248,9 @@ function hangup() {
 }
 
 function handleRemoteHangup() {
+  remoteVideo.classList.remove("remoteVideoInChatting");
+  localVideo.classList.remove("localVideoInChatting");
+  
   console.log('Session terminated.');
   stop();
   isInitiator = false;
